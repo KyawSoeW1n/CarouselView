@@ -87,6 +87,9 @@ class Slider : FrameLayout, OnPageChangeListener {
                     sliderImageViewHeight = typedArray.getDimensionPixelSize(R.styleable.BannerSlider_sliderImageHeight, resources.getDimensionPixelSize(R.dimen.default_slider_height))
                     indicatorActiveColor = typedArray.getColor(R.styleable.BannerSlider_indicatorActiveColor, ContextCompat.getColor(context, R.color.default_indicator_color_selected))
                     indicatorInactiveColor = typedArray.getColor(R.styleable.BannerSlider_indicatorInactiveColor, ContextCompat.getColor(context, R.color.default_indicator_color_unselected))
+
+                    if (sliderPlaceHolderImage == null)
+                        ContextCompat.getDrawable(context, R.drawable.image_shadow)
                 } catch (e: Exception) {
                     e.printStackTrace()
                 } finally {
@@ -99,9 +102,16 @@ class Slider : FrameLayout, OnPageChangeListener {
     }
 
     @JvmOverloads
-    fun addSlides(slideList: List<Slide>?, imageDefault: Drawable? = null, transformer: PageTransformer? = null) {
+    fun addSlides(slideList: List<Slide>?, imageDefault: Drawable? = ContextCompat.getDrawable(context, R.drawable.image_shadow),
+                  transformer: PageTransformer? = null) {
         if (slideList == null || slideList.isEmpty()) return
-        if (imageDefault != null) sliderPlaceHolderImage = imageDefault
+
+        sliderPlaceHolderImage = imageDefault
+
+        if (sliderErrorImage == null) {
+            sliderErrorImage = ContextCompat.getDrawable(context, R.drawable.ic_default_image)
+        }
+
         viewPager = LooperWrapViewPager(context)
         viewPager!!.id = generateViewId()
         if (transformer != null) viewPager!!.setPageTransformer(false, transformer) else viewPager!!.setPageTransformer(false, TransformersGroup().getTransformer(context, defaultTransition))

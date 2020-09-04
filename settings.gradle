@@ -1,4 +1,3 @@
 include ':carousel'
-include ':carousel'
 include ':app'
 rootProject.name = "Carousel View"
